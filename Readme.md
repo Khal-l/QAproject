@@ -86,7 +86,40 @@ Proper project structuring is crucial for maintaining a clear and manageable cod
 - **Structure**:
     - Create a `features` directory to contain your `.feature` files.
     - These feature files should define your BDD scenarios using Gherkin syntax.
+### This project file topology is 
 
+```bash
+    ├── .idea
+    ├── src
+    │   ├── main
+    │   │   └── java/org/example
+    │   │       └── Main.java
+    │   ├── test
+    │   │   ├── java/tests/steps
+    │   │   │   ├── ApiCallSteps.java
+    │   │   │   ├── ApiHelper.java
+    │   │   │   ├── ApiStatusSteps.java
+    │   │   │   ├── CurrencyPairsSteps.java
+    │   │   │   ├── JsonSchemaSteps.java
+    │   │   │   ├── ResponseTimeSteps.java
+    │   │   │   └── UsdPriceSteps.java
+    │   │   ├── resources
+    │   │   │   ├── feature
+    │   │   │   │   ├── api_call.feature
+    │   │   │   │   ├── api_status.feature
+    │   │   │   │   ├── currency_pairs.feature
+    │   │   │   │   ├── json_schema.feature
+    │   │   │   │   ├── response_time.feature
+    │   │   │   │   └── usd_price.feature
+    │   │   │   └── schemas
+    │   │   │       └── usd_rate_schema.json
+    │   │   └── java
+    │   │       └── TestRunner.java
+    ├── .gitignore
+    ├── pom.xml
+    └── README.md
+
+```
 ## Step 3: Writing BDD Features and Scenarios with Serenity
 
 For Step 3, we'll focus on writing BDD features and scenarios using Cucumber and Serenity in the IntelliJ IDEA environment.
