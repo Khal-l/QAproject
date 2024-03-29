@@ -1,10 +1,14 @@
-# Project Title:TESTING AN API FOR EXCHANGING RATES
-### THIS IS THE PROJECT REQUIREMENTS:
-#### SDET Assessment
-Given the API: https://open.er-api.com/v6/latest/USD
+# Project Title: TESTING AN API FOR EXCHANGING RATES
 
-Returns the USD rates against multiple currency.
+### PROJECT REQUIREMENTS:
+#### SDET Assessment
+
+Given the API: [https://open.er-api.com/v6/latest/USD](https://open.er-api.com/v6/latest/USD)
+
+Returns the USD rates against multiple currencies.
+
 #### Task
+
 - Create a test framework using Java/JVM language framework.
     - BDD approach would be an added advantage.
 - Write necessary tests to cover the acceptance criteria below.
@@ -12,8 +16,11 @@ Returns the USD rates against multiple currency.
 - Structure the code properly so that making changes becomes easier.
 - Upload the solution in bitbucket/GitHub and share the link of the repo
 - Include a README.md file.
+
 #### Description
+
 Key features of this test framework include:
+
 - **API Response Validation**: Ensures successful API calls and checks for valid response structures and data, employing RestAssured for HTTP interactions.
 - **Response Status Verification**: Incorporates checks for various API response statuses to ensure the API's robust error handling and success message conveyance.
 - **Rate Validation**: Specifically tests the USD to AED rate, ensuring the values fall within the expected range, thus verifying the API's currency conversion accuracy.
@@ -26,361 +33,90 @@ Key features of this test framework include:
 ## Step 1: Setting Up the Project in IntelliJ IDEA
 
 1. **Open IntelliJ IDEA**:
-  - If you don't have IntelliJ IDEA installed, download and install it from the JetBrains website.
-  - Launch IntelliJ IDEA.
+    - If you don't have IntelliJ IDEA installed, download and install it from the JetBrains website.
+    - Launch IntelliJ IDEA.
 
 2. **Create a New Project**:
-  - On the IntelliJ IDEA welcome screen, select "New Project."
-  - In the New Project window, choose "Maven" or "Gradle" on the left panel depending on your preference.
-  - Ensure the "Java" option is selected and the JDK is set (download a JDK if necessary).
-  - Click "Next" to proceed.
+    - On the IntelliJ IDEA welcome screen, select "New Project."
+    - In the New Project window, choose "Maven" or "Gradle" on the left panel depending on your preference.
+    - Ensure the "Java" option is selected and the JDK is set (download a JDK if necessary).
+    - Click "Next" to proceed.
 
 3. **Configure Project Details**:
-  - Enter your project's "GroupId" (e.g., cloud.digitalchain) and "ArtifactId" (e.g., currency-api-test).
-  - Define the project name and location.
-  - Click "Finish" to create the project.
+    - Enter your project's "GroupId" (e.g., `com.ApiTest`) and "ArtifactId" (e.g., `SDET`).
+    - Define the project name and location.
+    - Click "Finish" to create the project.
 
 4. **POM Configuration**:
    This Maven `pom.xml` file is configured with essential dependencies and plugins to facilitate the testing of your API. Notably, the `<artifactId>` tag specifies the unique identifier for your project, which is crucial for referencing and managing your project within the Maven ecosystem.
 
-- **Artifact ID**: `APIcurrency_QA`
+    - **Artifact ID**: `SDET`
 
-Using a descriptive and meaningful `artifactId` like `APIcurrency_QA` ensures clarity and coherence within your project and its associated artifacts. It serves as a recognizable label for your project, making it easier to identify and manage across various contexts, such as Maven builds, dependency management, and project documentation.
+   Using a descriptive and meaningful `artifactId` like `SDET` ensures clarity and coherence within your project and its associated artifacts. It serves as a recognizable label for your project, making it easier to identify and manage across various contexts, such as Maven builds, dependency management, and project documentation.
 
-```xml
-<artifactId>APIcurrency_QA</artifactId>
-```
-
-**Project Identifiers**
-
-- **Group ID**: `cloud.digitalchain`
-- **Artifact ID**: `currency-api-test`
-- **Version**: `1.0-SNAPSHOT`
-- **Packaging**: `jar`
-
-**Properties**
-
-- Java source and target compatibility are set to version 17.
-- UTF-8 encoding is specified for project building.
-- Versions for Serenity, Cucumber, RestAssured, JUnit, and Maven plugins are managed via properties for easy updates.
-
-**Dependencies**
-
-## Cucumber
-- **cucumber-junit:** Allows running Cucumber tests with JUnit.
-- **serenity-cucumber:** Integration between Cucumber and Serenity for BDD testing.
-
-## JUnit Jupiter
-- **junit-jupiter-api:** Provides the API for writing tests with JUnit 5.
-
-## Serenity BDD
-- **serenity-core:** Core library for the Serenity BDD framework.
-- **serenity-junit:** Integration between JUnit and Serenity.
-- **serenity-screenplay:** Library for implementing the Screenplay pattern in Serenity tests.
-- **serenity-screenplay-webdriver:** Screenplay support for WebDriver interactions.
-- **serenity-screenplay-rest:** Screenplay support for RESTful API testing.
-- **serenity-rest-assured:** Integration between Rest Assured and Serenity.
-
-## Other
-- **json:** JSON processing library.
-- **rest-assured:** Testing library for REST APIs.
-- **json-schema-validator:** JSON schema validation library for Rest Assured.
-
-**Build Configuration**
-
-- The `maven-surefire-plugin` is configured to skip the default test phase.
-- The `maven-failsafe-plugin` is set up to run integration tests, configured for parallel execution with unlimited threads.
-- The `maven-compiler-plugin` sets the Java version for source and target compatibility.
-- The `serenity-maven-plugin` is set up for post-integration test phase to generate aggregated Serenity reports.
-
-This `pom.xml` establishes a framework for running robust, automated API tests, ensuring that the application's REST endpoints perform as expected across different scenarios and environments.
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.example</groupId>
-    <artifactId>APIcurrency_QA</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>7.15.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-cucumber -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-cucumber</artifactId>
-            <version>4.1.4</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-core -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-core</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-junit -->
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-junit -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-junit</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-screenplay</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay-webdriver -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-screenplay-webdriver</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-screenplay-rest -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-screenplay-rest</artifactId>
-            <version>4.1.4</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/net.serenity-bdd/serenity-rest-assured -->
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-rest-assured</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20240303</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.4.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <version>5.4.0</version>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>net.serenity-bdd.maven.plugins</groupId>
-                <artifactId>serenity-maven-plugin</artifactId>
-                <version>4.1.3</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.serenity-bdd</groupId>
-                        <artifactId>serenity-core</artifactId>
-                        <version>4.1.3</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
-</project>
-```
-- For Maven: Open the pom.xml file and add dependencies for Cucumber, JUnit, RestAssured, and Serenity. Here's an example of what the dependencies might look like:
-- After adding the dependencies, IntelliJ should automatically start downloading them. If it doesn’t, you can trigger a reload of the project.
-
-
-5. **Enable Annotation Processing (if necessary):**
-- Go to “File” > “Settings” > “Build, Execution, Deployment” > “Compiler” > “Annotation Processors.”
-- Check “Enable annotation processing.”
-- Click “Apply” and “OK.”
-
-6. **Create Base Project Structure:**
-- Organize your project with directories for your features, step definitions, and utility classes within the src/test/java and src/test/resources folders as an example:
-# PROJECT STRUCTURE:
-```bash
-
-├── src
-│   ├── main
-│   │   
-│   └── test
-│       └── java
-│       │    └── tests
-│       │            └── steps
-│       │            │    │── ApiEndPoints.java 
-│       │            │    │── checkStatusCodeSteps.java
-│       │            │    │── currencyPairsSteps.java 
-│       │            │    │── RespSchemaSteps.java      
-│       │            │    │── RespTimeSteps.java
-│       │            │    │── USDtoAEDSteps.java 
-│       │            │    └── ValidRespSteps.java 
-│       │            └── cucumberRunnerSteps.java 
-│       └── resources
-│                   └── features
-│                   │    │── checkStatusCode.feature 
-│                   │    │── currencyPairs.feature 
-│                   │    │── RespSchema.feature     
-│                   │    │── RespTime.feature
-│                   │    │── USDtoAED.feature 
-│                   │    └── ValidResp.feature
-│                   └── schemas
-│                         └── schema.json             
-├── pom.xml  
-└── README.md                              
-```
-
-# Step 2: Project Structure for BDD Testing with Serenity
+## Step 2: Project Structure for BDD Testing with Serenity
 
 Proper project structuring is crucial for maintaining a clear and manageable codebase, especially when integrating Serenity for BDD testing. Follow these guidelines to structure your Maven or Gradle project in IntelliJ IDEA.
 
-## Main Source Directory
+### Main Source Directory
 
 - **Location**: `src/main/java`
 - **Purpose**: Contains the main source code of your application.
 - **Note**: Even though the focus is on testing, it's good practice to maintain this standard structure.
 
-## Test Source Directory
+### Test Source Directory
 
 - **Location**: `src/test/java`
 - **Purpose**: Houses all your test code, including BDD step definitions and supporting Java classes.
 - **Structure**:
-  - Store your BDD step definitions and any supporting Java classes here.
-  - Organize step definitions and helper classes into appropriate packages, for example, `cloud.digitalchain.currencyapitest.steps` and `cloud.digitalchain.currencyapitest.utils`.
+    - Store your BDD step definitions and any supporting Java classes here.
+    - Organize step definitions and helper classes into appropriate packages, for example, `tests.steps`.
+### Resource Directories
 
-## Resource Directories
-
-### Main Resources
+#### Main Resources
 
 - **Location**: `src/main/resources`
 - **Purpose**: Stores configuration files and other necessary resources for the application.
 - **Note**: This directory might not be heavily used in the context of this project.
 
-### Test Resources
+#### Test Resources
 
 - **Location**: `src/test/resources`
 - **Purpose**: Crucial for storing Cucumber feature files.
 - **Structure**:
-  - Create a `features` directory to contain your `.feature` files.
-  - These feature files should define your BDD scenarios using Gherkin syntax.
+    - Create a `features` directory to contain your `.feature` files.
+    - These feature files should define your BDD scenarios using Gherkin syntax.
 
-## Configuring Cucumber with Serenity
-
-Set up a Serenity-enabled Cucumber runner class to benefit from enhanced reporting and test management capabilities:
-
-- **Example `TestRunner` class with Serenity**:
- 
-```java
-  package tests;
-
-import io.cucumber.junit.CucumberOptions;
-import net.serenitybdd.cucumber.CucumberWithSerenity;
-import org.junit.runner.RunWith;
-
-@RunWith(CucumberWithSerenity.class)
-@CucumberOptions(
-features = "src/test/resources/features",
-glue = {"tests.steps"}, // Ensure this points to the correct package
-plugin = {"pretty", "html:target/cucumber-reports"}
-)
-public class cucumberRunnerSteps {
-
-}
- ```
-# Step 3: Writing BDD Features and Scenarios with Serenity
+## Step 3: Writing BDD Features and Scenarios with Serenity
 
 For Step 3, we'll focus on writing BDD features and scenarios using Cucumber and Serenity in the IntelliJ IDEA environment.
 For each test, We'll create a feature file that describes the behavior of the API, with a particular focus on fetching the USD to AED rate and validating various response aspects.
 
-## 1. Create a Feature File
+### 1. Create a Feature File
 
 - **Location**: Place your feature file in the `src/test/resources/features` directory.
-- **File Creation**: Create a new file named for example `ValidResp.feature`.
+- **File Creation**: Create a new file named for example `api_call.feature`.
 - **Content**: Feature files should have the `.feature` extension and contain text written in Gherkin syntax, which can be understood in plain English (or your chosen language).
 
-## 2. Define the Feature and Scenarios
+### 2. Define the Feature and Scenarios
 
 - **Feature Definition**: Start by defining the feature and outlining its purpose. Then, detail the scenarios using Given, When, Then, And steps.
 
-### Example Content for `ValidResp.feature`:
+#### Example Content for `api_call.feature`:
+Feature: Verify API call returns valid price
 
-```gherkin
-Feature: Successful API Call
+Scenario: Verify successful API call and valid price returned
+Given the API is available
+When the user makes a GET request to retrieve the price
+Then the response status code should be 200
+And the response body should contain a valid price
 
-  Scenario: Verify API call is successful and returns valid price
-    Given the API is accessible
-    When the user makes a request to the API
-    Then the response status code should be 200
-    And the response body should contain a valid price
-```
 ## 3. Understanding the Gherkin Syntax
 
--  Given: Sets up the context for the scenario.
--  When: Describes the action that triggers the scenario.
--  Then: Specifies the expected outcome or result.
--  And: Used for adding additional steps while maintaining readability.
+- Given: Sets up the context for the scenario.
+- When: Describes the action that triggers the scenario.
+- Then: Specifies the expected outcome or result.
+- And: Used for adding additional steps while maintaining readability.
 
 ## 4. Next Steps
 
@@ -404,80 +140,257 @@ In Step 4, we'll implement the step definitions in Java for the scenarios define
 ```java
 package tests.steps;
 
-
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-
-import static org.hamcrest.Matchers.equalTo;
+import io.cucumber.java.en.Then;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 
-public class ValidRespSteps {
-  @Given("the API is accessible")
-  public void theAPIIsAccessible() {
-  }
+public class ApiCallSteps {
 
-  @When("the user makes a request to the API")
-  public void theUserMakesARequestToTheAPI() {
+    private Response response;
 
-  }
+    @Given("the API is available")
+    public void the_api_is_available1() {
+        String apiUrl = "https://open.er-api.com/v6/latest/USD"; // Replace with your API endpoint
+        ApiHelper.verifyApiAvailability(apiUrl);
+    }
 
-  @Then("the response status code should be {int}")
-  public void theResponseStatusCodeShouldBe(int expectedStatusCode) {
-    given()
-            .get(ApiEndPoints.USD_LATEST_ENDPOINT)
-            .then()
-            .statusCode(expectedStatusCode);
-  }
+    @When("the user makes a GET request to retrieve the price")
+    public void user_makes_get_request1() {
+        // Code to make GET request to API
+        RequestSpecification request = given();
+        response = request.get("https://open.er-api.com/v6/latest/USD");
+    }
 
-  @Then("the response body should contain a valid price")
-  public void theResponseBodyShouldContainAValidPrice() {
-    given()
-            .get(ApiEndPoints.USD_LATEST_ENDPOINT)
-            .then()
-            .body("rates.USD", equalTo(1));
-  }
+    @Then("the response status code should be 200")
+    public void verify_status_code1(int expectedStatusCode) {
+        response.then().statusCode(expectedStatusCode);
+    }
+
+
+    @Then("the response body should contain a valid price")
+    public void verify_valid_price() {
+        // Code to verify response body contains valid price
+
+        // Check if response is not null
+        if (response != null) {
+            // Retrieve response body as a String
+            String responseBody = response.getBody().asString();
+
+// Parse the response body and extract the price
+            JsonPath jsonPath = new JsonPath(responseBody);
+            double price = jsonPath.getDouble("rates.USD");
+
+
+        } else {
+            // Handle case when response is null (e.g., API call failed)
+            // You can throw an exception or log an error message
+            throw new RuntimeException("API response is null. Check if API call was successful.");
+        }
+    }
 }
+    
+
 ```
+## 3. Validating the API Call and Response
 
-1. **Validating the API Call and Response**
+To ensure the API call is successful and returns the expected response, we need to validate both the response status code and the response body.
 
-- Ensure the API call is successful and returns a valid response. The status code check is already implemented in the step definitions. Additionally, verify that the response body is not empty.
+### Implementing Validation in Step Definitions
 
-2. **Checking the Response Status**
+In the step definitions, we'll define steps to validate the API call and response.
 
-- Implement steps to check if the response status indicates success or other statuses like FAILURE.
+- **Verifying Response Status Code**: Check if the response status code matches the expected value.
+- **Validating Response Body**: Ensure that the response body contains the expected data.
 
-3. **Validating the USD to AED Rate**
+These validations ensure that the API call was successful and that the response contains the expected data.
 
-- Include a method in the step definitions to verify the USD to AED rate is within the specified range (3.6 - 3.7), ensuring the rate is present and within the expected range.
+## 4. Checking the Response Status
 
-4. **Response Time Validation**
+It's essential to verify that the response status code indicates success or other specific conditions. Let's enhance our step definitions to handle various response statuses.
 
-- Add a step definition to validate that the API response time is less than the specified threshold (e.g., 3 seconds).
+### Implementing Response Status Validation
 
-5. **Timestamp Verification**
+Extend the step definitions to handle different response statuses:
 
-- Verify that the API response includes a timestamp, checking for its presence and possibly validating its format.
+- **Verifying Response Status Code**: Method to verify that the actual response status code matches the expected status code provided in the Gherkin scenario.
 
-6. **Currency Pairs Count Validation**
+## 5. Validating the USD to AED Rate
 
-- Confirm that the API returns data for 162 currency pairs by asserting the size of the rates object in the JSON response.
+One of the critical aspects of our API testing is to validate the accuracy of the currency conversion rates, such as the USD to AED rate. We'll implement steps to ensure this rate falls within the expected range.
 
-7. **JSON Schema Validation**
+### Implementing Rate Validation
 
-- Utilize RestAssured's schema validation feature to ensure the API response matches the expected JSON schema. Generate a JSON schema from the API response and use it in a step definition.
+Add a method to verify that the USD to AED rate falls within the expected range.
 
-## 3. Connect Steps to Feature File
+## 6. Response Time Validation
 
-The Java methods are connected to the steps in your feature file via the annotations. Cucumber, integrated with Serenity, will execute the Java code for each step during the test run.
+Response time validation ensures that the API responds within an acceptable timeframe. Let's add a step definition to validate the API's response time.
 
-## 4. Running Your Tests
+### Implementing Response Time Validation
 
-After implementing the step definitions, run the TestRunner class to execute your feature file scenarios. Serenity enhances the output, showing which steps passed or failed and providing detailed reports.
+Create a method to check if the API responds within a specified duration.
 
-**maven command**
--  Let's run the code: maven clean install
--  Responses show all tests successful
+## 7. Timestamp Verification
 
+To ensure data freshness and integrity, we'll validate the presence and format of timestamps in the API response.
+
+### Implementing Timestamp Verification
+
+Add a step definition to validate the timestamp format and presence in the API response.
+
+## 8. Currency Pairs Count Validation
+
+Our API should provide data for a specific number of currency pairs. Let's validate the count of currency pairs in the response.
+
+### Implementing Currency Pairs Count Validation
+
+Create a step definition to ensure the API response contains data for the expected number of currency pairs.
+
+## 9. JSON Schema Validation
+
+JSON schema validation ensures that the API response structure complies with a predefined schema. Let's implement this validation.
+
+### Implementing JSON Schema Validation
+
+Create a step definition to validate the API response against a predefined JSON schema.
+
+These step definitions cover comprehensive validation aspects, ensuring the correctness, reliability, and performance of the API under test.
+
+## 11. Running Your Tests
+
+After implementing the step definitions, run the tests to execute your feature file scenarios. Ensure that all tests pass, confirming the robustness and reliability of your API testing framework.
+
+## 12. pom.xml
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.ApiTest</groupId>
+  <artifactId>SDET</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <serenity.version>4.0.18</serenity.version>
+    <rest.assured.version>5.3.2</rest.assured.version>
+    <junit.version>4.13.2</junit.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+    <maven.failsafe.plugin.version>3.0.0-M5</maven.failsafe.plugin.version>
+    <serenity.maven.plugin.version>4.1.0</serenity.maven.plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-core</artifactId>
+      <version>${serenity.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-cucumber</artifactId>
+      <version>${serenity.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.serenity-bdd</groupId>
+      <artifactId>serenity-rest-assured</artifactId>
+      <version>${serenity.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${rest.assured.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>${rest.assured.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <parallel>methods</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.plugin.version}</version>
+        <configuration>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <parallel>methods</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.serenity-bdd.maven.plugins</groupId>
+        <artifactId>serenity-maven-plugin</artifactId>
+        <version>${serenity.maven.plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-single-page-report</artifactId>
+            <version>${serenity.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <tags>${tags}</tags>
+          <reports>single-page-html</reports>
+        </configuration>
+        <executions>
+          <execution>
+            <id>serenity-reports</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
